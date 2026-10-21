@@ -1,0 +1,1 @@
+export function envStatus() { return { database: Boolean(process.env.DATABASE_URL), auth: Boolean(process.env.AUTH_SECRET), autocount: Boolean(process.env.AUTCOUNT_API_KEY), aiReader: Boolean(process.env.AI_READER_API_KEY), storage: Boolean(process.env.R2_BUCKET) }; }

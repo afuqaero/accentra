@@ -2,7 +2,7 @@
 
 > Upload a financial document. AI reads it, classifies the entries, validates them, a human approves, and it posts to AutoCount Cloud. Then ask the books anything — grounded in MFRS and IFRS.
 
-**Status:** planning · no code yet · plan v1.0 (20 Oct 2026)
+**Status:** Phase 0 foundation scaffold · plan v1.0 (20 Oct 2026)
 
 ---
 
@@ -52,6 +52,15 @@ Accentra is **not** a general ledger. AutoCount remains the system of record. Ac
 
 1. Which AutoCount — Cloud Accounting API (`accounting-api.autocountcloud.com`) or Accounting 2.2 on-prem (`api.autocount.cloud` + Local Connector)?
 2. A sandbox account book + API key, created in Cloud Accounting → Settings → API Keys.
+
+## Run locally
+
+```bash
+pnpm install
+pnpm dev
+```
+
+The first runnable slice lives in `apps/web`: an Accentra dashboard with the review queue, upload entry point, book-health summary, and `/api/health` liveness route. It uses representative data until the database, authentication, storage, job runner, and AutoCount sandbox credentials are connected.
 
 ---
 

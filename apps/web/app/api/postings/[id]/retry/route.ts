@@ -1,0 +1,2 @@
+import { getPosting } from "../../../../../lib/posting-store";
+export async function POST(_request: Request, { params }: { params: Promise<{ id: string }> }) { const posting = getPosting((await params).id); if (!posting) return Response.json({ error: "Posting not found" }, { status: 404 }); return Response.json({ posting, message: "Retry requires a pre-check; no blind POST was issued." }, { status: 409 }); }

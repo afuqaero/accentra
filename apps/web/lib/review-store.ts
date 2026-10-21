@@ -1,0 +1,7 @@
+import { createHash, randomUUID } from "node:crypto";
+export type Review = { id: string; documentId: string; state: "IN_REVIEW" | "APPROVED" | "REJECTED" | "ESCALATED" | "SENT_BACK"; edits: Array<{ field: string; before: unknown; after: unknown }>; reason?: string; updatedAt: string };
+export type AuditEvent = { id: string; action: string; entity: string; entityId: string; before: unknown; after: unknown; reason?: string; createdAt: string; prevHash: string; hash: string };
+const reviews = new Map<string, Review>(); const events: AuditEvent[] = [];
+export function getReview(documentId: string) { let review = [...reviews.values()].find((item) => item.documentId === documentId); if (!review) { review = { id: randomUUID(), documentId, state: "IN_REVIEW", edits: [], updatedAt: new Date().toISOString() }; reviews.set(review.id, review); } return review; }
+export function updateReview(documentId: string, patch: Partial<Review>, reason?: string) { const review = getReview(documentId); const before = { ...review }; Object.assign(review, patch, { updatedAt: new Date().toISOString() }); const event = { id: randomUUID(), action: patch.state ? `review.${patch.state.toLowerCase()}` : "review.edit", entity: "review", entityId: review.id, before, after: review, reason, createdAt: new Date().toISOString() }; const prevHash = events.at(-1)?.hash ?? "GENESIS"; const hash = createHash("sha256").update(prevHash + JSON.stringify(event)).digest("hex"); events.push({ ...event, prevHash, hash }); return review; }
+export function auditEvents() { return events; }

@@ -1,0 +1,2 @@
+import { auditEvents } from "../../../../lib/review-store";
+export async function GET() { const rows = auditEvents(); const header = "id,action,entity,entity_id,reason,created_at"; const csv = [header, ...rows.map((row) => [row.id, row.action, row.entity, row.entityId, row.reason ?? "", row.createdAt].map((value) => `"${String(value).replaceAll('"', '""')}"`).join(","))].join("\n"); return new Response(csv, { headers: { "content-type": "text/csv; charset=utf-8", "content-disposition": "attachment; filename=accentra-audit.csv" } }); }
